@@ -1208,6 +1208,235 @@ button {
   }
 }
 
+/* ============================================================
+   Footer additions — Take-the-tour button
+   ============================================================ */
+.footer__links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.footer__tour {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition),
+    background var(--transition);
+}
+
+.footer__tour:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ============================================================
+   Walkthrough — first-time-user guided tour
+   ============================================================ */
+.walkthrough {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* When the card is anchored to a target element, don't centre it via flex —
+   the inline style fixed-positions it next to the target. */
+.walkthrough--anchored {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.walkthrough__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 12, 28, 0.7);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: walkthrough-fade-in 200ms ease-out;
+}
+
+.walkthrough__card {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 26px 22px;
+  max-width: 460px;
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  animation: walkthrough-pop 220ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+/* Arrow that points from the card toward the highlighted target.
+   It's a rotated square pinned to the card's edge facing the target. */
+.walkthrough__arrow {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  transform: translateX(-50%) rotate(45deg);
+  pointer-events: none;
+}
+
+/* Card placed BELOW the target — arrow on top edge, pointing up */
+.walkthrough__card--bottom .walkthrough__arrow {
+  top: -9px;
+  border-right: none;
+  border-bottom: none;
+}
+
+/* Card placed ABOVE the target — arrow on bottom edge, pointing down */
+.walkthrough__card--top .walkthrough__arrow {
+  bottom: -9px;
+  border-left: none;
+  border-top: none;
+}
+
+@keyframes walkthrough-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes walkthrough-pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.walkthrough__progress {
+  display: inline-block;
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.walkthrough__title {
+  font-size: 1.25rem;
+  line-height: 1.25;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.walkthrough__body {
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.walkthrough__tip {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-bottom: 16px;
+  line-height: 1.45;
+}
+
+.walkthrough__dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.walkthrough__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: pointer;
+  transition: background var(--transition), width var(--transition);
+}
+
+.walkthrough__dot--active {
+  background: var(--accent);
+  width: 22px;
+  border-radius: 4px;
+}
+
+.walkthrough__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.walkthrough__skip {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  cursor: pointer;
+  padding: 6px 8px;
+  transition: color var(--transition);
+}
+
+.walkthrough__skip:hover {
+  color: var(--text);
+}
+
+.walkthrough__nav {
+  display: flex;
+  gap: 8px;
+}
+
+/* Highlight on the element the current step is pointing at.
+   The pulsing ring brings the eye to the right control. */
+.walkthrough-target {
+  position: relative;
+  z-index: 1001;
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 999px;
+  animation: walkthrough-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes walkthrough-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 12px color-mix(in srgb, var(--accent) 0%, transparent);
+  }
+}
+
+@media (max-width: 600px) {
+  .walkthrough__card {
+    padding: 22px 18px 18px;
+  }
+  .walkthrough__title {
+    font-size: 1.1rem;
+  }
+  .walkthrough__controls {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .walkthrough__nav {
+    justify-content: space-between;
+  }
+}
+
 /* Print-only banner that appears at the very top of the PDF.
    Hidden on screen; shown only when printing. */
 .print-header {
@@ -1281,7 +1510,8 @@ button {
   .hero__avatar,
   .hero::before,
   .contact__form,
-  .section__lede {
+  .section__lede,
+  .walkthrough {
     display: none !important;
   }
 
